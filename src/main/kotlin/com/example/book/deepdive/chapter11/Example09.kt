@@ -23,7 +23,12 @@ private suspend fun getTweets(): List<Tweet> {
 private suspend fun getUserDetails(): Details = coroutineScope {
     val userName = async { getUserName() }
     val followersNumber = async { getFollowersNumber() }
-    Details(userName.await(), followersNumber.await())
+    try {
+        Details(userName.await(), followersNumber.await())
+    } catch (e: ApiException) {
+        log(e)
+        throw e
+    }
 }
 
 fun main() = runBlocking {

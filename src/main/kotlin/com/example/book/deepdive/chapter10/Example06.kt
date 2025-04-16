@@ -1,21 +1,25 @@
 package com.example.book.deepdive.chapter10
 
 import com.example.util.log
+import com.example.util.logJob
 import kotlinx.coroutines.*
 
-@OptIn(ExperimentalCoroutinesApi::class)
+/**
+ * coroutine#1(BlockingCoroutine) -> coroutine#1(SupervisorCoroutine) -> coroutine#2
+ *                                                                    -> coroutine#3
+ */
 fun main(): Unit = runBlocking {
-    log("#0 parent: ${coroutineContext.job.parent}, current: ${coroutineContext.job}")
+    coroutineContext.logJob()
     supervisorScope {
-        log("#1 parent: ${coroutineContext.job.parent}, current: ${coroutineContext.job}")
+        coroutineContext.logJob("#1")
         launch {
-            log("#11 parent: ${coroutineContext.job.parent}, current: ${coroutineContext.job}")
+            coroutineContext.logJob("#11")
             delay(1000)
             throw Error("Some error")
         }
 
         launch {
-            log("#12 parent: ${coroutineContext.job.parent}, current: ${coroutineContext.job}")
+            coroutineContext.logJob("#12")
             delay(2000)
             log("Will be printed")
         }

@@ -1,10 +1,7 @@
 package com.example.book.deepdive.chapter11
 
 import com.example.util.log
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.supervisorScope
+import kotlinx.coroutines.*
 
 fun main() = runBlocking {
     log("Before")
@@ -12,7 +9,7 @@ fun main() = runBlocking {
     supervisorScope {
         launch {
             delay(1000)
-            throw Error()
+            throw Error("Some Error")
         }
         launch {
             delay(2000)

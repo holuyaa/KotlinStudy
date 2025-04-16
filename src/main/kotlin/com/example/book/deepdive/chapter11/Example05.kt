@@ -1,6 +1,7 @@
 package com.example.book.deepdive.chapter11
 
 import com.example.util.log
+import com.example.util.logJob
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
@@ -22,13 +23,22 @@ private suspend fun getTweets(): List<Tweet> {
 }
 
 private suspend fun CoroutineScope.getUserDetails(): Details {
-    val userName = async { getUserName() }
-    val followersNumber = async { getFollowersNumber() }
+    coroutineContext.logJob("#1")
+    val userName = async {
+        coroutineContext.logJob("#11")
+        getUserName()
+    }
+    val followersNumber = async {
+        coroutineContext.logJob("#12")
+        getFollowersNumber()
+    }
+    log("Will be printed")
     return Details(userName.await(), followersNumber.await())
 }
 
 fun main() = runBlocking {
     val details = try {
+        coroutineContext.logJob("#1")
         getUserDetails()
     } catch (e: Error) {
         null

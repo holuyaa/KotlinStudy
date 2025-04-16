@@ -16,8 +16,8 @@ private val repositories: List<Repository> = (1..10).map {
 }.toList()
 
 fun main() = runBlocking {
-    val a = coroutineScope {
-//    val a = supervisorScope {
+//    val a = coroutineScope {
+    val a = supervisorScope {
         repositories
             .map { async { it.fetchArticles() } }
             .mapNotNull {

@@ -1,17 +1,17 @@
 package com.example.book.deepdive.chapter10
 
 import com.example.util.log
+import com.example.util.logJob
 import kotlinx.coroutines.*
 
-@OptIn(ExperimentalCoroutinesApi::class)
 fun main(): Unit = runBlocking {
-    log("#1 parent: ${coroutineContext.job.parent}, current: ${coroutineContext.job}")
+    coroutineContext.logJob("#1")
     val job = launch {
-        log("#11 parent: ${coroutineContext.job.parent}, current: ${coroutineContext.job}")
+        coroutineContext.logJob("#11")
         withContext(Dispatchers.Default) {
-            log("#111 parent: ${coroutineContext.job.parent}, current: ${coroutineContext.job}")
+            coroutineContext.logJob("#111")
             launch {
-                log("#1111 parent: ${coroutineContext.job.parent}, current: ${coroutineContext.job}")
+                coroutineContext.logJob("#1111")
                 delay(1000)
                 throw Error("Some error")
             }

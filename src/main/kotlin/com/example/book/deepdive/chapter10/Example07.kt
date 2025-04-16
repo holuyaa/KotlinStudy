@@ -1,21 +1,22 @@
 package com.example.book.deepdive.chapter10
 
 import com.example.util.log
+import com.example.util.logJob
 import kotlinx.coroutines.*
+import kotlin.coroutines.coroutineContext
 
 data class Notification(val msg: String)
 
 // Don't do this
-@OptIn(ExperimentalCoroutinesApi::class)
 private suspend fun sendNotifications(
     notifications: List<Notification>
 ) = withContext(SupervisorJob().also {
-    log("#0 parent: ${it.parent}, current: ${it.job}")
+    coroutineContext.logJob()
 }) {
-    log("#1 parent: ${coroutineContext.job.parent}, current: ${coroutineContext.job}")
+    coroutineContext.logJob("#1")
     notifications.forEachIndexed { i, notification ->
         launch {
-            log("#1$i parent: ${coroutineContext.job.parent}, current: ${coroutineContext.job}")
+            coroutineContext.logJob("#1$i")
             send(notification)
         }
     }
@@ -27,6 +28,12 @@ private suspend fun send(notification: Notification) {
     log("@@@@ $notification")
 }
 
+/**
+ * coroutine#1(BlockingCoroutine)
+ * SupervisorJobImpl -> coroutine#1(UnDispatchedCoroutine) -> coroutine#2
+ *                                                         -> coroutine#3
+ *                                                         -> coroutine#4
+ */
 fun main(): Unit = runBlocking {
     val notifications = listOf(
         Notification("Hello"),

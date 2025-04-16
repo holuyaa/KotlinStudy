@@ -13,7 +13,7 @@ suspend fun main() = supervisorScope {
         throw MyException()
     }
 
-    val str2 = async<String> {
+    val str2 = async {
         delay(2000)
         "Text2"
     }
