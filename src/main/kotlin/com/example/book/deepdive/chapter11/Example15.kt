@@ -1,22 +1,23 @@
 package com.example.book.deepdive.chapter11
 
 import com.example.util.log
+import com.example.util.logJob
 import kotlinx.coroutines.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
 suspend fun main(): Unit = coroutineScope {
-    log("#0 parentJob: ${coroutineContext.job.parent}, me: ${coroutineContext.job}")
+    coroutineContext.logJob()
     launch {
-        log("#1 parentJob: ${coroutineContext.job.parent}, me: ${coroutineContext.job}")
+        coroutineContext.logJob("#1")
         launch {
-            log("#2 parentJob: ${coroutineContext.job.parent}, me: ${coroutineContext.job}")
+            coroutineContext.logJob("#2")
             delay(2000)
             log("Will not be printed")
         }
         withTimeout(1000) {
-            log("#3 parentJob: ${coroutineContext.job.parent}, me: ${coroutineContext.job}")
+            coroutineContext.logJob("#3")
             launch {
-                log("#4 parentJob: ${coroutineContext.job.parent}, me: ${coroutineContext.job}")
+                coroutineContext.logJob("#4")
                 delay(1500)
                 log("I'm a child")
             }
@@ -26,7 +27,7 @@ suspend fun main(): Unit = coroutineScope {
         log("Can I print??")
     }
     launch {
-        log("#5 parentJob: ${coroutineContext.job.parent}, me: ${coroutineContext.job}")
+        coroutineContext.logJob("#5")
         delay(2000)
         log("Done")
     }

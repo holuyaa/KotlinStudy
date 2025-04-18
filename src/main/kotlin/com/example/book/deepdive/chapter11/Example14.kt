@@ -17,7 +17,7 @@ private suspend fun test(): Int = withTimeout(1500) {
 suspend fun main(): Unit = coroutineScope {
     try {
         test()
-    } catch (e: TimeoutCancellationException)  {
+    } catch (_: TimeoutCancellationException)  {
         log("Cancelled")
     }
     delay(1000)
