@@ -14,6 +14,9 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:1.7.2")
+
+    implementation("io.reactivex.rxjava2:rxkotlin:2.4.0")
 }
 
 tasks.test {
